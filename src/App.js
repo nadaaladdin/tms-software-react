@@ -7,6 +7,8 @@ import SingUp from './pages/SingUp';
 import Projects from './pages/Projects';
 import ForgotPassword from './pages/ForgotPassword';
 import Header from './components/Header';
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 class App extends Component {
   render() {
@@ -25,6 +27,18 @@ class App extends Component {
 
         </Routes>
       </Router>
+      <ToastContainer
+            position='bottom-center'
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+    />
       </>
     );
   }
