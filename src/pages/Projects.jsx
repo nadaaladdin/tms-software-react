@@ -87,7 +87,7 @@ export default function Projects() {
           <h2 className='text-2xl text-center  font-semibold text-blue-900'>
             My Projects
           </h2>
-          <ul>
+          <ul className='sm:grid sm:grid-cols-2 lg:grid-cols-3 xl-grid-cols-4 2xl-grid-cols-5 mt-6 mb-6' >
             {ProjectList.map((projectList)=>(
               <ListingItem 
                 key={projectList.id}
