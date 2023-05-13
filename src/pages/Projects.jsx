@@ -1,11 +1,46 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom';
 import {FcTodoList, FcAddImage} from 'react-icons/fc';
 
-import { icons } from 'react-icons/lib';
+// import { icons } from 'react-icons/lib';
+import { Timestamp, collection, doc, getDoc, getDocs, orderBy, query, where } from 'firebase/firestore';
+import { db } from '../firebase';
+import { getAuth } from 'firebase/auth';
+import ListingItem from "../components/ListingItem";
 
 export default function Projects() {
+
+  const auth=getAuth();
+  const [ProjectList, setProjectList] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState({
+    name: auth.currentUser.displayName,
+    email: auth.currentUser.email,
+  });
+  useEffect(()=>{
+    async function fetchUserProjects(){
+        const projectsRef = collection(db, "ProjectList");
+        const q = query(
+          projectsRef, 
+          where("userRef", "==", auth.currentUser.uid), 
+          orderBy("timestamp","desc"));
+        const querySnap =await getDocs(q);
+        let ProjectList =[];
+        querySnap.forEach((doc)=>{
+          return ProjectList.push({
+            id: doc.id,
+            data: doc.data(),
+          });
+        });
+       // console.log("list",ProjectList)
+        setProjectList(ProjectList);
+        setLoading(false);
+      }
+      fetchUserProjects();
+  }, [auth.currentUser.uid])
+
   return (
+    <>
     <section>
       <h1 className='text-3xl text-center mt-6 font-bold text-blue-900'>
         Projects
@@ -18,7 +53,7 @@ export default function Projects() {
                 className='w-full rounded-xl'/>
         </div>
 
-        
+
       <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
 
         <div className=' mb-5'>
@@ -46,5 +81,24 @@ export default function Projects() {
 
     </div>
     </section>
-  )
+    <div className='max-w-6xl px-3 mt-6 mx-auto'>
+      {!loading && ProjectList.length > 0 && ( 
+        <>
+          <h2 className='text-2xl text-center  font-semibold text-blue-900'>
+            My Projects
+          </h2>
+          <ul>
+            {ProjectList.map((projectList)=>(
+              <ListingItem 
+                key={projectList.id}
+                id={projectList.id}
+                projectList={projectList.data}
+                />
+            ))}
+          </ul>
+        </>
+      )}
+    </div>
+</>
+  );
 }

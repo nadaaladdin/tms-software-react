@@ -107,6 +107,7 @@ export default function CreateProject() {
       ...formData,
       imgUrls,
       timestamp: serverTimestamp(),
+      userRef: auth.currentUser.uid,
     };
     delete formDataCopy.images;
     const docRef = await addDoc(collection(db, "ProjectList"), formDataCopy);
