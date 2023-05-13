@@ -47,6 +47,13 @@ export default function Profile() {
     <>
       <section className='max-w-6xl mx-auto flex justify-center items-center flex-col'>
         <h1 className='text-3xl text-center mt-6 font-bold text-blue-900'>My Profile</h1>
+        <div className='flex justify-center flex-wrap items-center px-6 py-12 max-w-6xl mx-auto'>
+        <div className='md:w-[30%] lg:w-[30%] mb-12 md:mb-1'>
+        <img  src='https://www.meistertask.com/blog/wp-content/uploads/2022/05/MT-Blog-Header_Slack-integration_220310-796x398.jpg' 
+                alt='task' 
+                className='w-full rounded-xl'/>
+          </div>
+        </div>
         <div className='w-full md:w-[50%] mt-6 px-3'>
           <form>
             {/*Name Input*/}
