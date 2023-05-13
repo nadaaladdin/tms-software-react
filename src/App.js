@@ -24,14 +24,19 @@ class App extends Component {
           <Route path='/profile' element={<PrivateRoute />}>
              <Route path="/profile" element={<Profile />}/>
           </Route>
+
           <Route path='/projects' element={<PrivateRoute />}>
              <Route path="/projects" element={<Projects />}/>
           </Route>
+
+          <Route path='/create-project' element={<PrivateRoute />}>
+                <Route path="/create-project" element={<CreateProject />}/>
+          </Route>
+
           <Route path="/sign-in" element={<SignIn />}/>
           <Route path="/sign-up" element={<SingUp />}/>
           <Route path="/projects" element={<Projects />}/>
           <Route path="/forgot-password" element={<ForgotPassword />}/>
-          <Route path="/create-project" element={<CreateProject />}/>
 
         </Routes>
       </Router>
