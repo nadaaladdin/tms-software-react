@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom';
-import {FcTodoList, FcAddImage} from 'react-icons/fc';
+import {FcAddImage} from 'react-icons/fc';
 
 // import { icons } from 'react-icons/lib';
 import { Timestamp, collection, doc, getDoc, getDocs, orderBy, query, where } from 'firebase/firestore';
@@ -57,23 +57,12 @@ export default function Projects() {
       <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
 
         <div className=' mb-5'>
-          <button className="w-full bg-yellow-500 font-medium text-sm uppercase rounded shadow-md hover:bg-yellow-300 transition duration-150 ease-in-out hover:shadow-lg active:bg-yellow-500 text-white px-7 py-3"
+        <button className="w-full bg-red-500 font-medium text-sm uppercase rounded shadow-md hover:bg-red-400 transition duration-150 ease-in-out hover:shadow-lg active:bg-red-500 text-white px-7 py-3"
                 type="submit">
                 <Link to="/create-project" className='flex justify-center items-center '>
                 <FcAddImage className='mr-2 text-3xl ' />
                    Create New project
                   </Link>
-          </button>
-        </div>
-
-        <div className='mb-5'>
-
-          <button className="w-full bg-red-500 font-medium text-sm uppercase rounded shadow-md hover:bg-red-400 transition duration-150 ease-in-out hover:shadow-lg active:bg-red-500 text-white px-7 py-3"
-                type="submit">
-            <Link to="/listing-project" className='flex justify-center items-center'>
-            <FcTodoList className='mr-2 text-3xl'/>
-            View My projects
-            </Link>
           </button>
         </div>
 
