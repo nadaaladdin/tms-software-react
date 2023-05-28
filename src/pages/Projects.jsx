@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {FcAddImage} from 'react-icons/fc';
 
 // import { icons } from 'react-icons/lib';
-import { Timestamp, collection, doc, getDoc, getDocs, orderBy, query, where } from 'firebase/firestore';
+import { Timestamp, collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
 import { getAuth } from 'firebase/auth';
 import ListingItem from "../components/ListingItem";
+import { toast } from 'react-toastify';
 
 export default function Projects() {
-
+  const navigate = useNavigate();
   const auth=getAuth();
   const [ProjectList, setProjectList] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -39,6 +40,21 @@ export default function Projects() {
       fetchUserProjects();
   }, [auth.currentUser.uid])
 
+
+  async function onDelete(projectListID){
+    if(window.confirm("Are you sure? you want delete the project?")){
+      await deleteDoc(doc(db, "ProjectList", projectListID))
+      const updatedListing =ProjectList.filter(
+        (project)=> project.id !== projectListID
+      );
+      setProjectList(updatedListing)
+      toast.success("Project is deleted successfully..")
+    }
+  }
+
+  function onEdit(projectListID){
+    navigate(`/edit-project/${projectListID}`);
+  }
   return (
     <>
     <section>
@@ -82,6 +98,9 @@ export default function Projects() {
                 key={projectList.id}
                 id={projectList.id}
                 projectList={projectList.data}
+                onDelete={()=>onDelete(projectList.id)}
+                onEdit={()=>onEdit(projectList.id)}
+
                 />
             ))}
           </ul>
