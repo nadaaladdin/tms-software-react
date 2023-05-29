@@ -11,6 +11,7 @@ import Header from './components/Header';
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import CreateProject from './pages/CreateProject';
+import EditProject from './pages/EditProject';
 
 class App extends Component {
   render() {
@@ -31,6 +32,10 @@ class App extends Component {
 
           <Route path='/create-project' element={<PrivateRoute />}>
                 <Route path="/create-project" element={<CreateProject />}/>
+          </Route>
+
+          <Route path='/edit-project' element={<PrivateRoute />}>
+                <Route path="/edit-project/:projectID" element={<EditProject />}/>
           </Route>
 
           <Route path="/sign-in" element={<SignIn />}/>
@@ -56,5 +61,4 @@ class App extends Component {
     );
   }
 }
-
 export default App;
