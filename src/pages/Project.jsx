@@ -2,6 +2,8 @@ import { doc, getDoc } from "firebase/firestore";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
+
 import Spinner from "../components/Spinner";
 import { db } from "../firebase";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -45,8 +47,8 @@ import { getAuth } from "firebase/auth";
             }
         }
         fetchProject();
-
     },[params.projectID])
+
     if(loading){
         return <Spinner/>;
     }
@@ -67,7 +69,17 @@ import { getAuth } from "firebase/auth";
         ))}
     </Swiper>
 
-    <div className="bg-white mx-auto flex justify-center items-center flex-col max-w-6xl p-4 rounded-lg shadow-lg mt-7">
+    <div className='flex justify-between  w-full md:w-[67%] lg:w-[40%] lg:ml-20 mt-6'>
+    <div className=' mb-5'>
+        <button className="w-full bg-red-500 font-medium text-sm uppercase rounded shadow-md hover:bg-red-400 transition duration-150 ease-in-out hover:shadow-lg active:bg-red-500 text-white px-10 py-3"
+                type="submit">
+      <Link to={`/create-task?projectID=${params.projectID}`} className='flex justify-center items-center'>               Add Task
+               </Link>
+          </button>
+    </div>
+  </div>
+
+    <div className="bg-white mx-auto flex justify-center items-center flex-col max-w-6xl p-4 rounded-lg shadow-lg mt-2">
       <div className="mx-auto flex-1 bg-blue-300 w-full h-[400px] lg-[400px] rounded-lg">
          <p className=" ml-5 text-4xl font-bold mt-4 mb-6 text-green-700">
             {project.name} 
@@ -124,6 +136,8 @@ import { getAuth } from "firebase/auth";
 
       </div>
     </div>
+      
+      
 </main>  
   )
 }

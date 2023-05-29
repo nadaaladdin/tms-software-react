@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import CreateProject from './pages/CreateProject';
 import EditProject from './pages/EditProject';
 import Project from './pages/Project';
+import CreateTask from './pages/CreateTask';
 
 class App extends Component {
   render() {
@@ -33,6 +34,10 @@ class App extends Component {
 
           <Route path='/create-project' element={<PrivateRoute />}>
                 <Route path="/create-project" element={<CreateProject />}/>
+          </Route>
+
+          <Route path='/create-task' element={<PrivateRoute />}>
+                <Route path="/create-task" element={<CreateTask />}/>
           </Route>
 
           <Route path='/edit-project' element={<PrivateRoute />}>
