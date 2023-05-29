@@ -12,6 +12,7 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import CreateProject from './pages/CreateProject';
 import EditProject from './pages/EditProject';
+import Project from './pages/Project';
 
 class App extends Component {
   render() {
@@ -42,6 +43,7 @@ class App extends Component {
           <Route path="/sign-up" element={<SingUp />}/>
           <Route path="/projects" element={<Projects />}/>
           <Route path="/forgot-password" element={<ForgotPassword />}/>
+          <Route path="/category/:categoryName/:projectID" element={<Project />}/>
 
         </Routes>
       </Router>

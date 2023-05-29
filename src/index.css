@@ -5,3 +5,7 @@
 body{
     background-color: rgb(186, 255, 146);
 }
+
+.swiper-pagination-progressbar .swiper-pagination-progressbar-fill{
+    background: #a8dadc !important
+}
