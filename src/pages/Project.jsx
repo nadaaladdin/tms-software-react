@@ -161,7 +161,7 @@ import ListingTask from "../components/ListingTask";
   <div>
       {!loading && TaskList && TaskList.length > 0 &&(
         <>
-          <h2 className="text-2xl text-center font-semibold mb-6"> Project Tasks</h2>
+          <h2 className='text-2xl text-center  font-semibold text-blue-900 mt-10'> Project Tasks</h2>
           <ul className='sm:grid sm:grid-cols-2 lg:grid-cols-3 xl-grid-cols-4 2xl-grid-cols-5 mt-6 mb-6' >
             {TaskList.map((taskList)=>(
               <ListingTask 
