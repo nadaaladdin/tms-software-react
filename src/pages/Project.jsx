@@ -71,9 +71,24 @@ import ListingTask from "../components/ListingTask";
           fetchProjectTasks();
     },[])
 
-  if(loading){
+    async function onDelete(taskListId){
+      if(window.confirm("Are you sure? you want delete the task?")){
+        await deleteDoc(doc(db, "TaskList", taskListId))
+        const updatedListing =ProjectList.filter(
+          (project)=> project.id !== taskListId
+        );
+        setProjectList(updatedListing)
+        toast.success("Task is deleted successfully..")
+      }
+    }  
+   function onEdit(taskListId){
+      //navigate(`/edit-task/${taskListId}`);
+    }
+  
+    if(loading){
       return <Spinner/>;
     }
+
   return (
 <main>
     <Swiper slidesPerView={1} navigation={false} pagination={{type: "progressbar"}}
@@ -168,6 +183,8 @@ import ListingTask from "../components/ListingTask";
                 key={taskList.id}
                 id={taskList.id}
                 taskList={taskList.data}
+                onDelete={()=>onDelete(taskList.id)}
+                onEdit={()=>onEdit(taskList.id)}
                 />
             ))}
           </ul>

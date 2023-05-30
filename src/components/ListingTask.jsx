@@ -1,8 +1,10 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import Moment from "react-moment";
+import {FaTrashAlt} from "react-icons/fa";
+import {MdModeEditOutline} from "react-icons/md";
 
-export default function ListingTask({ taskList, id }) {
+export default function ListingTask({ taskList, id , onDelete, onEdit }) {
  
     return <li className='text-black relative bg-yellow-200 flex flex-col justify-between  shadow-md hover:shadow-xl rounded-md overflow-hidden transition-shadow duration-150 m-[10px]'>
         <Link className='contents' to={`/category/${id}`}>
@@ -19,6 +21,15 @@ export default function ListingTask({ taskList, id }) {
                     <p>Due Date:  {taskList.dueDate}</p>
                 </div>
         </Link>
-
+        {onDelete && (
+          <FaTrashAlt className=" absolute bottom-2 right-2 h-[18px] cursor-pointer text-red-500"
+          onClick={()=>onDelete(taskList.id)}
+          />
+        )}
+         {onEdit && (
+          <MdModeEditOutline className=" absolute bottom-2 right-8 h-4 cursor-pointer text-black"
+          onClick={()=>onEdit(taskList.id)}
+          />
+         )}
         </li>;
 }
