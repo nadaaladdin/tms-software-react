@@ -14,6 +14,7 @@ import CreateProject from './pages/CreateProject';
 import EditProject from './pages/EditProject';
 import Project from './pages/Project';
 import CreateTask from './pages/CreateTask';
+import EditTask from './pages/EditTask';
 
 class App extends Component {
   render() {
@@ -42,6 +43,10 @@ class App extends Component {
 
           <Route path='/edit-project' element={<PrivateRoute />}>
                 <Route path="/edit-project/:projectID" element={<EditProject />}/>
+          </Route>
+
+          <Route path='/edit-task' element={<PrivateRoute />}>
+                <Route path="/edit-task/:taskListId" element={<EditTask />}/>
           </Route>
 
           <Route path="/sign-in" element={<SignIn />}/>

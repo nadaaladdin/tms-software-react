@@ -33,6 +33,7 @@ import ListingTask from "../components/ListingTask";
 
 
   export default function Project() {
+    const navigate = useNavigate();
     const params = useParams()
     const [project, setProject] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -82,7 +83,7 @@ import ListingTask from "../components/ListingTask";
       }
     }  
    function onEdit(taskListId){
-      //navigate(`/edit-task/${taskListId}`);
+      navigate(`/edit-task/${taskListId}`);
     }
   
     if(loading){
