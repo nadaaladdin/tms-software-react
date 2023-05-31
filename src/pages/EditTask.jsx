@@ -6,6 +6,8 @@ import { toast } from 'react-toastify';
 import {getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { addDoc, collection, serverTimestamp,doc,getDoc,updateDoc } from 'firebase/firestore';
+import { getDocs, orderBy, query } from 'firebase/firestore';
+
 import { db } from '../firebase';
 import { useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
@@ -21,6 +23,7 @@ export default function EditTask() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const projectID = searchParams.get('projectID');
+  const [users, setUsers] = useState([]); 
 
   const [formData, setFormData] = useState({
     projID:projectID,
@@ -45,6 +48,7 @@ export default function EditTask() {
             setTask(docSnap.data())
             setFormData({...docSnap.data()})
             setLoading(false)
+            
         }else{
             navigate("/")
             toast.error("Task does not exist..")
@@ -54,6 +58,26 @@ export default function EditTask() {
     fetchTask();
   },[navigate, params.taskListId]);
 
+  useEffect(()=>{
+    async function fetchUsers(){
+        const usersRef = collection(db, "users");
+        const q = query(
+          usersRef, 
+          orderBy("timestamp","desc"));
+        const querySnap =await getDocs(q);
+        let users =[];
+        querySnap.forEach((doc)=>{
+          return users.push({
+            id: doc.id,
+            data: doc.data(),
+          });
+        });
+       // console.log("list",ProjectList)
+        setUsers(users);
+        setLoading(false);
+      }
+      fetchUsers();
+  }, [])
 
   function onChange(e){
       let boolean = null;
@@ -78,7 +102,6 @@ export default function EditTask() {
         }));
       }
   }
-
   async function onSubmit(e){
     e.preventDefault(); //prevent refresh the page
     setLoading(true);
@@ -120,7 +143,28 @@ export default function EditTask() {
       required
       className='w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:test-gray-700 focus:bg-white focus:border-slate-600 mb-2'
       />
-      
+    
+
+    {projectManager === auth.currentUser.uid ?(
+      <div className='mb-6'>
+      <p className='text-lg font-semibold text-blue-900'>Assign Member</p>
+      <select
+        id='member'
+        value={member}
+        onChange={onChange}
+        className='w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:test-gray-700 focus:bg-white focus:border-slate-600 mb-2'
+      >
+        <option value=''>Select a member</option>
+        {users.map((user) => (
+          <option key={user.id} value={user.id}>
+            {user.data.email}
+          </option>
+        ))}
+      </select>
+    </div>
+  
+    ):null
+    }
     <p className='text-blue-900 text-lg mt-6 font-semibold'>Description</p>
     <textarea 
       type="text"  
