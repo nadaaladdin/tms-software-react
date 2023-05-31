@@ -9,11 +9,14 @@ import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
+import { Timestamp, deleteDoc, doc, getDoc, getDocs, orderBy, query, where } from 'firebase/firestore';
+import ListingUsers from '../components/ListingUsers';
 
 export default function CreateTask() {
   const auth = getAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState(null); 
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -34,6 +37,27 @@ export default function CreateTask() {
   });
   const {projID, name, description, dueDate, status, priority,member, projectManager, images} = formData;
 
+
+  useEffect(()=>{
+    async function fetchUsers(){
+        const usersRef = collection(db, "users");
+        const q = query(
+          usersRef, 
+          orderBy("timestamp","desc"));
+        const querySnap =await getDocs(q);
+        let users =[];
+        querySnap.forEach((doc)=>{
+          return users.push({
+            id: doc.id,
+            data: doc.data(),
+          });
+        });
+       // console.log("list",ProjectList)
+        setUsers(users);
+        setLoading(false);
+      }
+      fetchUsers();
+  }, [])
 
 
   function onChange(e){
@@ -136,6 +160,27 @@ export default function CreateTask() {
 
 <main className='max-w-md px-2 mx-auto'>
 <h1 className='text-3xl text-center mt-6 font-bold text-blue-900'> Create New Task</h1>
+
+
+
+<div className='max-w-6xl px-3 mt-6 mx-auto'>
+      {!loading && users && users.length > 0 && ( 
+        <>
+          <ul className='sm:grid sm:grid-cols-2 lg:grid-cols-3 xl-grid-cols-4 2xl-grid-cols-5 mt-6 mb-6' >
+            
+            {users.map((user)=>(
+              <ListingUsers
+              key={user.id}
+              id={user.id}
+              user={user.data}
+              />
+            ))}
+          </ul>
+        </>
+      )}
+    </div>
+
+
 <form onSubmit={onSubmit}>
     <p className='text-blue-900 text-lg mt-6 font-semibold'>Task Name</p>
     <input 
