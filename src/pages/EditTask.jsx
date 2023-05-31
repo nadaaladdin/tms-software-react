@@ -27,7 +27,7 @@ export default function EditTask() {
     name: "",
     description: "",
     dueDate: "",
-    status: "In-Progress", // Default status is set to 'In-Progress'
+    status: "", // Default status is set to 'In-Progress'
     priority:"",
     member:"",
     projectManager: auth.currentUser.displayName, // Project manager will be set to the name of the signed-in user

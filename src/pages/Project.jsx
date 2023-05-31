@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Link, useNavigate } from 'react-router-dom';
-
 import Spinner from "../components/Spinner";
 import { db } from "../firebase";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -19,15 +18,6 @@ import SwiperCore, {
   Pagination,
 } from "swiper";
 import "swiper/css/bundle";
-import {
-  FaShare,
-  FaMapMarkerAlt,
-  FaBed,
-  FaBath,
-  FaParking,
-  FaChair,
-} from "react-icons/fa";
-import { getAuth } from "firebase/auth";
 import ListingTask from "../components/ListingTask";
 
 
