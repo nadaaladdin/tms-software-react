@@ -17,6 +17,7 @@ import SwiperCore, {
 import "swiper/css/bundle";
 import { useNavigate } from "react-router-dom";
 import { FcLowPriority, FcHighPriority, FcMediumPriority } from "react-icons/fc";
+import { Link } from 'react-router-dom';
 
 export default function Task() {
   const params = useParams();
@@ -96,6 +97,18 @@ export default function Task() {
         ))}
       </Swiper>
 
+
+      <div className='flex justify-between  w-full md:w-[67%] lg:w-[40%] lg:ml-20 mt-6'>
+    <div className=' mb-5'>
+        <button className="w-full bg-red-500 font-medium text-sm uppercase rounded shadow-md hover:bg-red-400 transition duration-150 ease-in-out hover:shadow-lg active:bg-red-500 text-white px-10 py-3"
+                type="submit">
+      <Link to={`/edit-task/${params.id}`} className='flex justify-center items-center'>               Edit Task
+               </Link>
+          </button>
+    </div>
+     </div>
+
+
       <div className="bg-white mx-auto flex justify-center items-center flex-col max-w-6xl p-4 rounded-lg shadow-lg mt-2">
         <div className="mx-auto flex-1 bg-blue-300 w-full h-[400px] lg-[400px] rounded-lg">
           <p className="ml-5 text-4xl font-bold mt-4 mb-6 text-green-700">
@@ -127,10 +140,10 @@ export default function Task() {
           </p>
 
           <p className="flex ml-6 text-2xl font-bold mb-3 text-blue-800">
-            {task.priority === "high" ? (
+            {task.priority === "High" ? (
               <FcHighPriority className="mr-1 sm:text-4xl" />
             ) : null}
-            {task.priority === "low" ? (
+            {task.priority === "Low" ? (
               <FcLowPriority className="mr-1 sm:text-4xl" />
             ) : null}
             {task.priority === "Medium" ? (
@@ -139,9 +152,9 @@ export default function Task() {
             Priority:
             <span
               className={`ml-1 ${
-                task.priority === "low"
+                task.priority === "Low"
                   ? "text-green-500"
-                  : task.priority === "normal"
+                  : task.priority === "Medium"
                   ? "text-blue-500"
                   : "text-red-500"
               }`}

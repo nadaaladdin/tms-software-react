@@ -96,7 +96,7 @@ export default function EditTask() {
     setLoading(false);
 
     toast.success("Edit task is done successfully!");
-    navigate("/Projects");
+    navigate(`/category/${params.taskListId}`);
   }
 
   if(loading){
