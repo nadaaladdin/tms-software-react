@@ -142,23 +142,30 @@ export default function EditTask() {
       min={new Date().toISOString().split('T')[0]} // Set the minimum date to the current date
       className='w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:test-gray-700 focus:bg-white focus:border-slate-600 mb-2'
       />
-      <p className='text-lg font-semibold text-blue-900'>Task Status</p>
-          <input 
-            type="text" 
-            id="status" 
-            onChange={onChange}
-            value={status} 
-            className='w-full text-center px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:test-gray-700 focus:bg-white focus:border-slate-600 mb-2'
-            />
+    <p className='text-lg font-semibold text-blue-900'>Task Status</p>
+      <select
+          id="status"
+          onChange={onChange}
+          value={status}
+          className='w-full text-center px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:test-gray-700 focus:bg-white focus:border-slate-600 mb-2'
+        >
+        <option value="ToDo">ToDo</option>
+        <option value="In-Progress">In-Progress</option>
+        <option value="Done">Done</option>
+      </select>
+
 
       <p className='text-lg font-semibold text-blue-900'>Task Priority</p>
-          <input 
-            type="text" 
-            id="priority" 
+          <select
+            id="priority"
             onChange={onChange}
-            value={priority} 
+            value={priority}
             className='w-full text-center px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:test-gray-700 focus:bg-white focus:border-slate-600 mb-2'
-            />
+          >
+            <option value="High">High</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+          </select>
 
         <button type='submit' className=' flex justify-center items-center  py-2 w-full bg-blue-900 font-medium text-sm uppercase rounded shadow-md hover:bg-blue-700 transition duration-150 ease-in-out hover:shadow-lg active:bg-blue-500 text-white px-7 mb-6'>
             Edit The Task
