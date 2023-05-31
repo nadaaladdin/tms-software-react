@@ -16,8 +16,9 @@ export default function CreateTask() {
   const auth = getAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState(null); 
+  const [users, setUsers] = useState([]); 
 
+  
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const projectID = searchParams.get('projectID');
@@ -162,26 +163,9 @@ export default function CreateTask() {
 <h1 className='text-3xl text-center mt-6 font-bold text-blue-900'> Create New Task</h1>
 
 
-
-<div className='max-w-6xl px-3 mt-6 mx-auto'>
-      {!loading && users && users.length > 0 && ( 
-        <>
-          <ul className='sm:grid sm:grid-cols-2 lg:grid-cols-3 xl-grid-cols-4 2xl-grid-cols-5 mt-6 mb-6' >
-            
-            {users.map((user)=>(
-              <ListingUsers
-              key={user.id}
-              id={user.id}
-              user={user.data}
-              />
-            ))}
-          </ul>
-        </>
-      )}
-    </div>
-
-
 <form onSubmit={onSubmit}>
+  
+
     <p className='text-blue-900 text-lg mt-6 font-semibold'>Task Name</p>
     <input 
       type="text"  
@@ -194,6 +178,24 @@ export default function CreateTask() {
       required
       className='w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:test-gray-700 focus:bg-white focus:border-slate-600 mb-2'
       />
+      
+    
+      <div className='mb-6'>
+          <p className='text-lg font-semibold text-blue-900'>Assign Member</p>
+          <select
+            id='member'
+            value={member}
+            onChange={onChange}
+            className='w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:test-gray-700 focus:bg-white focus:border-slate-600 mb-2'
+          >
+            <option value=''>Select a member</option>
+            {users.map((user) => (
+              <option key={user.id} value={user.id}>
+                {user.data.name}
+              </option>
+            ))}
+          </select>
+        </div>
       
     <p className='text-blue-900 text-lg mt-6 font-semibold'>Description</p>
     <textarea 
@@ -247,6 +249,7 @@ export default function CreateTask() {
                 className="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:bg-white focus:border-slate-600"
                 />
             </div>
+
 
         <button type='submit' className=' flex justify-center items-center  py-2 w-full bg-blue-900 font-medium text-sm uppercase rounded shadow-md hover:bg-blue-700 transition duration-150 ease-in-out hover:shadow-lg active:bg-blue-500 text-white px-7 mb-6'>
             Create The Task
