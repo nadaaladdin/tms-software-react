@@ -51,9 +51,17 @@ class App extends Component {
 
           <Route path="/sign-in" element={<SignIn />}/>
           <Route path="/sign-up" element={<SingUp />}/>
-          <Route path="/projects" element={<Projects />}/>
           <Route path="/forgot-password" element={<ForgotPassword />}/>
-          <Route path="/category/:categoryName/:projectID" element={<Project />}/>
+
+
+          <Route path='/projects' element={<PrivateRoute />}>
+                 <Route path="/projects" element={<Projects />}/>
+          </Route>
+
+
+          <Route path='/category/:categoryName/:projectID' element={<PrivateRoute />}>
+                <Route path="/category/:categoryName/:projectID" element={<Project />}/>
+          </Route>
 
         </Routes>
       </Router>
