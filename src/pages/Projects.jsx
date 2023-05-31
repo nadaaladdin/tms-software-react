@@ -17,6 +17,7 @@ export default function Projects() {
   const [ProjectList, setProjectList] = useState(null);
   const [TaskList, setTaskList] = useState(null);
 
+
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     name: auth.currentUser.displayName,
@@ -84,6 +85,19 @@ export default function Projects() {
   function onEdit(projectListID){
     navigate(`/edit-project/${projectListID}`);
   }
+
+  async function onDelete1(taskListID){
+    if(window.confirm("Are you sure? you want delete the task?")){
+      await deleteDoc(doc(db, "TaskList", taskListID))
+      const updatedListing =TaskList.filter((task)=> task.id !== taskListID);
+      setTaskList(updatedListing)
+      toast.success("Task is deleted successfully..")
+    }
+  }
+
+  function onEdit1(taskListID){
+    navigate(`/edit-task/${taskListID}`);
+  }
   return (
     <>
     <section>
@@ -147,8 +161,8 @@ export default function Projects() {
                 key={taskList.id}
                 id={taskList.id}
                 taskList={taskList.data}
-                onDelete={()=>onDelete(taskList.id)}
-                onEdit={()=>onEdit(taskList.id)}
+                onDelete1={()=>onDelete1(taskList.id)}
+                onEdit1={()=>onEdit1(taskList.id)}
                 />
             ))}
           </ul>

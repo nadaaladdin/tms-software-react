@@ -72,7 +72,7 @@ import ListingTask from "../components/ListingTask";
           fetchProjectTasks();
     },[])
 
-    async function onDelete(taskListId){
+    async function onDelete1(taskListId){
       if(window.confirm("Are you sure? you want delete the task?")){
         await deleteDoc(doc(db, "TaskList", taskListId))
         const updatedListing =ProjectList.filter(
@@ -82,7 +82,7 @@ import ListingTask from "../components/ListingTask";
         toast.success("Task is deleted successfully..")
       }
     }  
-   function onEdit(taskListId){
+   function onEdit1(taskListId){
       navigate(`/edit-task/${taskListId}`);
     }
   
@@ -184,8 +184,8 @@ import ListingTask from "../components/ListingTask";
                 key={taskList.id}
                 id={taskList.id}
                 taskList={taskList.data}
-                onDelete={()=>onDelete(taskList.id)}
-                onEdit={()=>onEdit(taskList.id)}
+                onDelete1={()=>onDelete1(taskList.id)}
+                onEdit1={()=>onEdit1(taskList.id)}
                 />
             ))}
           </ul>
