@@ -14,6 +14,7 @@ export default function ListingTask({ taskList, id , onDelete, onEdit }) {
             </Moment>
                 <div className='ml-6 font-semibold justify-between text-sm items-center space-x-1'>
                     <p className=' mt-2 truncate text-2xl text-blue-500'>Name: {taskList.name}</p>
+                    <p>Project Manager: {taskList.projectManager}</p>
                      <p>Status: {taskList.status}</p>
                      <p>Priority:
                      <span className={`ml-1 ${taskList.priority === 'low' ? 'text-green-500' : taskList.priority === 'normal' ? 'text-blue-500' : 'text-red-500'}`}>{taskList.priority}</span> 

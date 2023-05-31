@@ -7,12 +7,16 @@ import { Timestamp, collection, deleteDoc, doc, getDoc, getDocs, orderBy, query,
 import { db } from '../firebase';
 import { getAuth } from 'firebase/auth';
 import ListingItem from "../components/ListingItem";
+import ListingTask from "../components/ListingTask";
+
 import { toast } from 'react-toastify';
 
 export default function Projects() {
   const navigate = useNavigate();
   const auth=getAuth();
   const [ProjectList, setProjectList] = useState(null);
+  const [TaskList, setTaskList] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     name: auth.currentUser.displayName,
@@ -39,6 +43,31 @@ export default function Projects() {
       }
       fetchUserProjects();
   }, [auth.currentUser.uid])
+
+
+
+  useEffect(()=>{
+    async function fetchUserParticipateProjects(){
+        const tasksRef = collection(db, "TaskList");
+        const q = query(
+          tasksRef, 
+          where("member", "==", auth.currentUser.uid), 
+          orderBy("timestamp","desc"));
+        const querySnap =await getDocs(q);
+        let TaskList =[];
+        querySnap.forEach((doc)=>{
+          return TaskList.push({
+            id: doc.id,
+            data: doc.data(),
+          });
+        });
+       // console.log("list",ProjectList)
+        setTaskList(TaskList);
+        setLoading(false);
+      }
+      fetchUserParticipateProjects();
+  }, [auth.currentUser.uid])
+
 
 
   async function onDelete(projectListID){
@@ -107,6 +136,26 @@ export default function Projects() {
         </>
       )}
     </div>
+
+    <div>
+      {!loading && TaskList && TaskList.length > 0 &&(
+        <>
+          <h2 className='text-2xl text-center  font-semibold text-blue-900 mt-10'> Assigned Tasks</h2>
+          <ul className='sm:grid sm:grid-cols-2 lg:grid-cols-3 xl-grid-cols-4 2xl-grid-cols-5 mt-6 mb-6' >
+            {TaskList.map((taskList)=>(
+              <ListingTask 
+                key={taskList.id}
+                id={taskList.id}
+                taskList={taskList.data}
+                onDelete={()=>onDelete(taskList.id)}
+                onEdit={()=>onEdit(taskList.id)}
+                />
+            ))}
+          </ul>
+        </>
+      )}
+</div>
+
 </>
   );
 }
