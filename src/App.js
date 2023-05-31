@@ -15,6 +15,7 @@ import EditProject from './pages/EditProject';
 import Project from './pages/Project';
 import CreateTask from './pages/CreateTask';
 import EditTask from './pages/EditTask';
+import SecondPrivateRoute from './components/SecondPrivateRoute';
 
 class App extends Component {
   render() {
@@ -53,15 +54,10 @@ class App extends Component {
           <Route path="/sign-up" element={<SingUp />}/>
           <Route path="/forgot-password" element={<ForgotPassword />}/>
 
-
-          <Route path='/projects' element={<PrivateRoute />}>
-                 <Route path="/projects" element={<Projects />}/>
-          </Route>
-
-
-          <Route path='/category/:categoryName/:projectID' element={<PrivateRoute />}>
-                <Route path="/category/:categoryName/:projectID" element={<Project />}/>
-          </Route>
+          <Route path='/category/:categoryName/:projectID' element={<SecondPrivateRoute />}>
+                   <Route path="/category/:categoryName/:projectID" element={<Project />}/>
+            </Route>
+        
 
         </Routes>
       </Router>
