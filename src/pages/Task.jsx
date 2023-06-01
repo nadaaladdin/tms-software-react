@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { GrStatusGood } from "react-icons/gr";
 import Spinner from "../components/Spinner";
 import { FcManager, FcCalendar,FcBusinessman } from "react-icons/fc";
-import { MdDescription,MdWorkHistory } from "react-icons/md";
+import { MdDescription,MdWorkHistory,MdEditNote } from "react-icons/md";
 import SwiperCore, {
   EffectFade,
   Autoplay,
@@ -18,6 +18,9 @@ import "swiper/css/bundle";
 import { useNavigate } from "react-router-dom";
 import { FcLowPriority, FcHighPriority, FcMediumPriority } from "react-icons/fc";
 import { Link } from 'react-router-dom';
+import {RiArrowGoBackFill} from "react-icons/ri"
+import { getAuth } from 'firebase/auth';
+
 
 export default function Task() {
   const params = useParams();
@@ -25,8 +28,10 @@ export default function Task() {
   const [task, setTask] = useState(null);
   const [memberName, setMemberName] = useState('');
   const [projectName, setProjectName] = useState('');
-  const [projectDueDate, setProjectDueDate] =useState('');
+  const [projectDueDate, setProjectDueDate] = useState('');
+  const [projectType, setProjectType] = useState('');
   const navigate = useNavigate();
+  const auth = getAuth();
 
   SwiperCore.use([Autoplay, Navigation, Pagination]);
 
@@ -57,8 +62,10 @@ export default function Task() {
             const userData = projectDocSnap.data();
             setProjectName(userData.name);
             setProjectDueDate(userData.dueDate);
+            setProjectType(userData.type);
           } else {
             setProjectName('Unknown User');
+            setProjectType ('undefine')
           }
 
         setLoading(false);
@@ -70,6 +77,7 @@ export default function Task() {
 
     fetchTask();
   }, [navigate, params.id]);
+
 
   if (loading) {
     return <Spinner />;
@@ -103,11 +111,24 @@ export default function Task() {
     <div className=' mb-5'>
         <button className="w-full bg-red-500 font-medium text-sm uppercase rounded shadow-md hover:bg-red-400 transition duration-150 ease-in-out hover:shadow-lg active:bg-red-500 text-white px-10 py-3"
                 type="submit">
-      <Link to={`/edit-task/${params.id}`} className='flex justify-center items-center'>               Edit Task
+      <Link to={`/edit-task/${params.id}`} className='flex justify-center items-center'>  <MdEditNote className="mr-2 text-xl"  />          Edit Task
                </Link>
           </button>
     </div>
      </div>
+     {  task && task.userRef === auth.currentUser.uid ?(
+
+     <div className='flex justify-between  w-full md:w-[67%] lg:w-[40%] lg:ml-20 mt-6'>
+     <div className=' mb-5'>
+         <button className="w-full bg-blue-500 font-medium text-sm uppercase rounded shadow-md hover:bg-blue-400 transition duration-150 ease-in-out hover:shadow-lg active:bg-blue-500 text-white px-10 py-3"
+                 type="submit">
+          
+       <Link to={`/category/${projectType}/${task.projID}`} className='flex justify-center items-center'> <RiArrowGoBackFill className="mr-2 "/>            Go Back to Project Page
+                </Link>
+           </button>
+     </div>
+      </div>
+     ):null}
 
 
       <div className="bg-white mx-auto flex justify-center items-center flex-col max-w-6xl p-4 rounded-lg shadow-lg mt-2">
