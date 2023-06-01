@@ -17,7 +17,7 @@ export default function ListingTask({ taskList, id , onDelete1, onEdit1 }) {
                     <p>Project Manager: {taskList.projectManager}</p>
                      <p>Status: {taskList.status}</p>
                      <p>Priority:
-                     <span className={`ml-1 ${taskList.priority === 'low' ? 'text-green-500' : taskList.priority === 'normal' ? 'text-blue-500' : 'text-red-500'}`}>{taskList.priority}</span> 
+                     <span className={`ml-1 ${taskList.priority === 'Low' ? 'text-green-500' : taskList.priority === 'Medium' ? 'text-yellow-500' : 'text-red-500'}`}>{taskList.priority}</span> 
                     </p>
                     <p>Due Date:  {taskList.dueDate}</p>
                 </div>
