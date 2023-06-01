@@ -8,7 +8,7 @@ export default function ProjectProgressReport() {
   const params = useParams();
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState([]);
-  const [taskList, setTaskList] = useState([]);
+  const [tasks, setTasks] = useState([]);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -26,85 +26,73 @@ export default function ProjectProgressReport() {
   }, [params.id]);
 
   useEffect(() => {
-    async function fetchProjectTasks() {
-      const taskRef = collection(db, "TaskList");
-      const q = query(
-        taskRef,
-        where("projID", "==", params.id),
-        orderBy("timestamp", "desc")
-      );
-      const querySnap = await getDocs(q);
-      let taskList = [];
-      querySnap.forEach((doc) => {
-        return taskList.push({
-          id: doc.id,
-          data: doc.data(),
-        });
-      });
-      setTaskList(taskList);
-      setLoading(false);
-    }
+    const fetchTasks = async () => {
+      try {
+        const taskListRef = collection(db, 'TaskList');
+        const q = query(taskListRef, where("projID", "==", params.id));
+        const querySnapshot = await getDocs(q);
+        
+        const tasks = [];
+        
+        for (const docSnap of querySnapshot.docs) {
+          const task = docSnap.data();
+          const userId = task.member;
+          
+          const userDocRef = doc(db, 'users', userId);
+          const userDocSnap = await getDoc(userDocRef);
+          
+          if (userDocSnap.exists()) {
+            const user = userDocSnap.data();
+            const taskWithUserName = {
+              ...task,
+              userName: user.name
+            };
+            
+            tasks.push(taskWithUserName);
+          }
+        }
+        
+        setTasks(tasks);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      }
+    };
 
-    fetchProjectTasks();
+    fetchTasks();
   }, [params.id]);
 
-
-  useEffect(() => {
-    async function fetchUsers() {
-      if (taskList.length > 0) {
-        const memberIds = taskList.map((task) => task.data.member);
-        const usersRef = collection(db, "users");
-        const querySnap = await getDocs(usersRef);
-        let users = [];
-        querySnap.forEach((doc) => {
-          if (memberIds.includes(doc.id)) {
-            users.push({
-              id: doc.id,
-              data: doc.data(),
-            });
-          }
-        });
-        setUsers(users);
-      }
-      setLoading(false);
-    }
-
-    fetchUsers();
-  }, [taskList]);
-  
 
   if (loading) {
     return <Spinner />;
   }
- 
-  console.log(users)
-  
+   
   return (
-    <div className="container mx-auto">
-      {/* Render project information */}
-      <table className="min-w-full bg-white">
-        <thead>
-          <tr>
-            <th className="border-b-2 border-gray-300 p-2">Name</th>
-            <th className="border-b-2 border-gray-300 p-2">Due Date</th>
-            <th className="border-b-2 border-gray-300 p-2">Status</th>
-            <th className="border-b-2 border-gray-300 p-2">Project Manager</th>
-            <th className="border-b-2 border-gray-300 p-2">Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className="border-b border-gray-300 p-2">{projects.name}</td>
-            <td className="border-b border-gray-300 p-2">{projects.status}</td>
-            <td className="border-b border-gray-300 p-2">{projects.dueDate}</td>
-            <td className="border-b border-gray-300 p-2">{projects.projectManager}</td>
-            <td className="border-b border-gray-300 p-2">{projects.description}</td>
-          </tr>
-        </tbody>
-      </table>
+    <div className="container mx-auto mt-6 mb-4">
+      <div>
+        <table className="min-w-full bg-white">
+          <thead>
+            <tr>
+              <th className="border-b-2 border-gray-300 p-2">Name</th>
+              <th className="border-b-2 border-gray-300 p-2">Due Date</th>
+              <th className="border-b-2 border-gray-300 p-2">Status</th>
+              <th className="border-b-2 border-gray-300 p-2">Project Manager</th>
+              <th className="border-b-2 border-gray-300 p-2">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="border-b border-gray-300 p-2">{projects.name}</td>
+              <td className="border-b border-gray-300 p-2">{projects.status}</td>
+              <td className="border-b border-gray-300 p-2">{projects.dueDate}</td>
+              <td className="border-b border-gray-300 p-2">{projects.projectManager}</td>
+              <td className="border-b border-gray-300 p-2">{projects.description}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-      {/* Render task list */}
-      <div className="container mx-auto">
+      <div className="mt-6">
         <table className="min-w-full bg-white">
           <thead>
             <tr>
@@ -118,16 +106,15 @@ export default function ProjectProgressReport() {
             </tr>
           </thead>
           <tbody>
-            {taskList.map((task) => (
-              <tr key={task.id}>
-                <td className="border-b border-gray-300 p-2">{task.data.name}</td>
-                <td className="border-b border-gray-300 p-2">{task.data.dueDate}</td>
-                <td className="border-b border-gray-300 p-2">{task.data.status}</td>
-                <td className="border-b border-gray-300 p-2">{task.data.priority}</td>
-                <td className="border-b border-gray-300 p-2">
-                {users.find((user) => user.id === task.data.member)?.data.member}  </td>
-                <td className="border-b border-gray-300 p-2">{task.data.projectManager}</td>
-                <td className="border-b border-gray-300 p-2">{task.data.description}</td>
+            {tasks.map((task, index) => (
+              <tr key={index}>
+                <td className="border-b border-gray-300 p-2">{task.name}</td>
+                <td className="border-b border-gray-300 p-2">{task.dueDate}</td>
+                <td className="border-b border-gray-300 p-2">{task.status}</td>
+                <td className="border-b border-gray-300 p-2">{task.priority}</td>
+                <td className="border-b border-gray-300 p-2">{task.userName}</td>
+                <td className="border-b border-gray-300 p-2">{task.projectManager}</td>
+                <td className="border-b border-gray-300 p-2">{task.description}</td>
               </tr>
             ))}
           </tbody>

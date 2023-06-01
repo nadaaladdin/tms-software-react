@@ -1,4 +1,4 @@
-import { Timestamp, collection, doc, getDoc, getDocs, orderBy, query, where } from "firebase/firestore";
+import { Timestamp, collection, doc, getDoc, getDocs,deleteDoc, orderBy, query, where } from "firebase/firestore";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -19,7 +19,7 @@ import SwiperCore, {
 } from "swiper";
 import "swiper/css/bundle";
 import ListingTask from "../components/ListingTask";
-
+import { toast } from 'react-toastify';
 
 
   export default function Project() {
@@ -28,6 +28,7 @@ import ListingTask from "../components/ListingTask";
     const [project, setProject] = useState(null);
     const [loading, setLoading] = useState(true);
     const [TaskList, setTaskList] = useState(null);
+    const [ProjectList, setProjectList] = useState(null)
 
     SwiperCore.use([Autoplay, Navigation, Pagination]);
 
@@ -65,10 +66,10 @@ import ListingTask from "../components/ListingTask";
     async function onDelete1(taskListId){
       if(window.confirm("Are you sure? you want delete the task?")){
         await deleteDoc(doc(db, "TaskList", taskListId))
-        const updatedListing =ProjectList.filter(
-          (project)=> project.id !== taskListId
+        const updatedListing =TaskList.filter(
+          (task)=> task.id !== taskListId
         );
-        setProjectList(updatedListing)
+        setTaskList(updatedListing)
         toast.success("Task is deleted successfully..")
       }
     }  
