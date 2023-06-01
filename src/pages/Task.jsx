@@ -20,6 +20,7 @@ import { FcLowPriority, FcHighPriority, FcMediumPriority } from "react-icons/fc"
 import { Link } from 'react-router-dom';
 import {RiArrowGoBackFill} from "react-icons/ri"
 import { getAuth } from 'firebase/auth';
+import Chat from "../components/Chat";
 
 
 export default function Task() {
@@ -130,6 +131,13 @@ export default function Task() {
       </div>
      ):null}
 
+     <div className='flex justify-between  w-full md:w-[67%] lg:w-[40%] lg:ml-20 mt-6'>
+          <div className=' mb-5'>
+                <button  className="w-full bg-yellow-500 font-medium text-sm uppercase rounded shadow-md hover:bg-yellow-400 transition duration-150 ease-in-out hover:shadow-lg active:bg-yellow-500 text-white px-10 py-3">
+                    Contact
+                </button>
+            </div>
+      </div>
 
       <div className="bg-white mx-auto flex justify-center items-center flex-col max-w-6xl p-4 rounded-lg shadow-lg mt-2">
         <div className="mx-auto flex-1 bg-blue-300 w-full h-[400px] lg-[400px] rounded-lg">
@@ -198,6 +206,7 @@ export default function Task() {
           </p>
         </div>
       </div>
+      <Chat/>
     </main>
   );
 }
