@@ -4,6 +4,9 @@ import { doc, getDoc, collection, query, where, orderBy, getDocs } from "firebas
 import { db } from "../firebase";
 import Spinner from "../components/Spinner";
 import ChartComponent from "../components/ChartComponent";
+import {RiArrowGoBackFill} from "react-icons/ri";
+import { getAuth } from 'firebase/auth';
+import { Link } from 'react-router-dom';
 
 export default function ProjectProgressReport() {
   const params = useParams();
@@ -11,6 +14,7 @@ export default function ProjectProgressReport() {
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [chartData, setChartData] = useState(null);
+  const auth = getAuth();
 
   const calculateChartData = (tasks) => {
     const taskCounts = {
@@ -106,6 +110,18 @@ export default function ProjectProgressReport() {
   }
   return (
     <div className="container mx-auto mt-6 mb-4">
+           {  projects && projects.userRef === auth.currentUser.uid ?(
+
+              <div className='flex justify-between  w-full md:w-[67%] lg:w-[40%] lg:ml-20 mt-6'>
+              <div className=' mb-5'>
+              <button className="w-full bg-blue-500 font-medium text-sm uppercase rounded shadow-md hover:bg-blue-400 transition duration-150 ease-in-out hover:shadow-lg active:bg-blue-500 text-white px-10 py-3"
+                 type="submit">
+              <Link to={`/category/${projects.type}/${params.id}`} className='flex justify-center items-center'> <RiArrowGoBackFill className="mr-2 "/>            Go Back to Project Page
+                </Link>
+            </button>
+              </div>
+              </div>
+              ):null}
       <div>
         <table className="min-w-full bg-white">
           <thead>
