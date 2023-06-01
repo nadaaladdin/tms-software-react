@@ -208,6 +208,7 @@ export default function EditTask() {
           value={status}
           className='w-full text-center px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:test-gray-700 focus:bg-white focus:border-slate-600 mb-2'
         >
+        <option value=''>Select a status</option>
         <option value="ToDo">ToDo</option>
         <option value="In-Progress">In-Progress</option>
         <option value="Done">Done</option>

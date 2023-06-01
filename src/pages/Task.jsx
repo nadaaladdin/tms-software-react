@@ -177,7 +177,7 @@ export default function Task() {
                 task.priority === "Low"
                   ? "text-green-500"
                   : task.priority === "Medium"
-                  ? "text-blue-500"
+                  ? "text-yellow-500"
                   : "text-red-500"
               }`}
             >
