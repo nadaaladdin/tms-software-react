@@ -219,6 +219,18 @@ export default function CreateTask() {
         className='w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:test-gray-700 focus:bg-white focus:border-slate-600 mb-2'
       />
 
+<p className='text-lg font-semibold text-blue-900'>Task Status</p>
+      <select
+          id="status"
+          onChange={onChange}
+          value={status}
+          className='w-full text-center px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:test-gray-700 focus:bg-white focus:border-slate-600 mb-2'
+        >
+        <option value="ToDo">ToDo</option>
+        <option value="In-Progress">In-Progress</option>
+        <option value="Done">Done</option>
+      </select>
+
         <div className='mb-6'>
           <p className='text-lg font-semibold text-blue-900'>Priority</p>
           <div>
