@@ -101,7 +101,15 @@ import ListingTask from "../components/ListingTask";
     <div className=' mb-5'>
         <button className="w-full bg-red-500 font-medium text-sm uppercase rounded shadow-md hover:bg-red-400 transition duration-150 ease-in-out hover:shadow-lg active:bg-red-500 text-white px-10 py-3"
                 type="submit">
-      <Link to={`/create-task?projectID=${params.projectID}`} className='flex justify-center items-center'>               Add Task
+      <Link to={`/create-task?projectID=${params.projectID}`} className='flex justify-center items-center'>   Create Task
+               </Link>
+          </button>
+    </div>
+
+    <div className=' mb-5'>
+        <button className="w-full bg-blue-500 font-medium text-sm uppercase rounded shadow-md hover:bg-blue-400 transition duration-150 ease-in-out hover:shadow-lg active:bg-blue-500 text-white px-10 py-3"
+                type="submit">
+      <Link to={"/projects"} className='flex justify-center items-center'>  View Progress
                </Link>
           </button>
     </div>
