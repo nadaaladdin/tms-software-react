@@ -17,6 +17,7 @@ import CreateTask from './pages/CreateTask';
 import EditTask from './pages/EditTask';
 import SecondPrivateRoute from './components/SecondPrivateRoute';
 import Task from './pages/Task';
+import ProjectProgress from './pages/ProjectProgress';
 
 class App extends Component {
   render() {
@@ -61,6 +62,10 @@ class App extends Component {
         
             <Route path='/category/:id' element={<PrivateRoute />}>
                    <Route path="/category/:id" element={<Task />}/>
+            </Route>
+
+            <Route path='/project-progress/:id' element={<PrivateRoute/>}>
+            <Route path='/project-progress/:id' element={<ProjectProgress />}/>
             </Route>
 
         </Routes>
