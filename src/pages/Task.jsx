@@ -25,7 +25,7 @@ export default function Task() {
   const [task, setTask] = useState(null);
   const [memberName, setMemberName] = useState('');
   const [projectName, setProjectName] = useState('');
-
+  const [projectDueDate, setProjectDueDate] =useState('');
   const navigate = useNavigate();
 
   SwiperCore.use([Autoplay, Navigation, Pagination]);
@@ -56,6 +56,7 @@ export default function Task() {
         if (projectDocSnap.exists()) {
             const userData = projectDocSnap.data();
             setProjectName(userData.name);
+            setProjectDueDate(userData.dueDate);
           } else {
             setProjectName('Unknown User');
           }

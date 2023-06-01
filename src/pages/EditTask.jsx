@@ -19,31 +19,34 @@ export default function EditTask() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const params =useParams()
-    const [task, setTask] =useState(null);
+  const [task, setTask] =useState(null);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const projectID = searchParams.get('projectID');
-  const [users, setUsers] = useState([]); 
+  const [project, setProject] = useState(null);
 
+  const projectID = searchParams.get('projectID');
+
+  const [users, setUsers] = useState([]); 
   const [formData, setFormData] = useState({
-    projID:projectID,
+    projID: projectID,
     name: "",
     description: "",
     dueDate: "",
-    status: "", // Default status is set to 'In-Progress'
-    priority:"",
-    member:"",
-    projectManager: auth.currentUser.displayName, // Project manager will be set to the name of the signed-in user
+    status: "",
+    priority: "",
+    member: "",
+    projectManager: auth.currentUser.displayName,
     images: {},
   });
-  const {projID, name, description, dueDate, status, priority,member, projectManager, images} = formData;
+
+  const { projID, name, description, dueDate, status, priority, member, projectManager, images } = formData;
+
 
   useEffect(()=>{
     setLoading(true);
     async function fetchTask(){
        const docRef = doc(db, "TaskList", params.taskListId);
        const docSnap = await getDoc(docRef);
-       
         if(docSnap.exists()){
             setTask(docSnap.data())
             setFormData({...docSnap.data()})
@@ -57,7 +60,6 @@ export default function EditTask() {
 
     fetchTask();
   },[navigate, params.taskListId]);
-
   useEffect(()=>{
     async function fetchUsers(){
         const usersRef = collection(db, "users");
@@ -78,6 +80,18 @@ export default function EditTask() {
       }
       fetchUsers();
   }, [])
+
+  useEffect(() => {
+    async function fetchProject() {
+        if(task && task.projID){
+        const projectRef = doc(db, "ProjectList", task && task.projID);
+        const projectDoc = await getDoc(projectRef);
+        if (projectDoc.exists()) {
+          setProject(projectDoc.data());
+        } 
+    }}
+    fetchProject();
+  }, [task]);
 
   function onChange(e){
       let boolean = null;
@@ -121,7 +135,6 @@ export default function EditTask() {
     toast.success("Edit task is done successfully!");
     navigate(`/category/${params.taskListId}`);
   }
-
   if(loading){
     return <Spinner/>;
   }
@@ -145,7 +158,7 @@ export default function EditTask() {
       />
     
 
-    {projectManager === auth.currentUser.uid ?(
+    {task && task.projectManager === auth.currentUser.uid ?(
       <div className='mb-6'>
       <p className='text-lg font-semibold text-blue-900'>Assign Member</p>
       <select
@@ -176,16 +189,18 @@ export default function EditTask() {
       minLength='4'
       className='w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:test-gray-700 focus:bg-white focus:border-slate-600 mb-2'
       />
-      <p className='text-blue-900 text-lg mt-6 font-semibold'>Due Date</p>
-    <input 
-      type="date"  
-      id="dueDate" 
-      value={dueDate} 
-      onChange={onChange}
-      required
-      min={new Date().toISOString().split('T')[0]} // Set the minimum date to the current date
-      className='w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:test-gray-700 focus:bg-white focus:border-slate-600 mb-2'
+
+      <p className='text-blue-900 text-lg mt-6 font-semibold'>Due Date</p>      
+      <input
+        type="date"
+        id="dueDate"
+        value={dueDate}
+        onChange={onChange}
+        min={new Date().toISOString().split('T')[0]} // Set the minimum date to the current date
+        max={project && project.dueDate} // Set the maximum date to the project's due date
+        className='w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:test-gray-700 focus:bg-white focus:border-slate-600 mb-2'
       />
+
     <p className='text-lg font-semibold text-blue-900'>Task Status</p>
       <select
           id="status"
@@ -199,17 +214,46 @@ export default function EditTask() {
       </select>
 
 
-      <p className='text-lg font-semibold text-blue-900'>Task Priority</p>
-          <select
-            id="priority"
-            onChange={onChange}
-            value={priority}
-            className='w-full text-center px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:test-gray-700 focus:bg-white focus:border-slate-600 mb-2'
-          >
-            <option value="High">High</option>
-            <option value="Low">Low</option>
-            <option value="Medium">Medium</option>
-          </select>
+      <div className='mb-6'>
+          <p className='text-lg font-semibold text-blue-900'> Task Priority</p>
+          <div>
+            <label className='inline-flex items-center mt-3'>
+              <input
+                type="radio"
+                id="priority"
+                value="Low"
+                checked={priority === "Low"}
+                onChange={onChange}
+                className='form-radio h-5 w-5 text-green-600 transition duration-150 ease-in-out'
+              />
+              <span className='ml-2'>Low</span>
+            </label>
+
+            <label className='inline-flex items-center mt-3'>
+              <input
+                type="radio"
+                id="priority"
+                value="Medium"
+                checked={priority === "Medium"}
+                onChange={onChange}
+                className='form-radio h-5 w-5 text-yellow-500 transition duration-150 ease-in-out'
+              />
+              <span className='ml-2'>Medium</span>
+            </label>
+
+            <label className='inline-flex items-center mt-3'>
+              <input
+                type="radio"
+                id="priority"
+                value="High"
+                checked={priority === "High"}
+                onChange={onChange}
+                className='form-radio h-5 w-5 text-red-500 transition duration-150 ease-in-out'
+              />
+              <span className='ml-2'>High</span>
+            </label>
+          </div>
+        </div>
 
         <button type='submit' className=' flex justify-center items-center  py-2 w-full bg-blue-900 font-medium text-sm uppercase rounded shadow-md hover:bg-blue-700 transition duration-150 ease-in-out hover:shadow-lg active:bg-blue-500 text-white px-7 mb-6'>
             Edit The Task
