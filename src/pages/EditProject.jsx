@@ -179,7 +179,7 @@ export default function EditProject() {
             id="status" 
             value={status} 
             onChange={onChange}
-
+            disabled
             className='w-full text-center px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:test-gray-700 focus:bg-white focus:border-slate-600 mb-2'
             />
        <p className='text-lg font-semibold text-blue-900'>Project Manager</p>

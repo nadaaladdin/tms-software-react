@@ -1,4 +1,4 @@
-import { Timestamp, collection, doc, getDoc, getDocs,deleteDoc, orderBy, query, where } from "firebase/firestore";
+import { Timestamp, collection, doc, getDoc, getDocs,deleteDoc,updateDoc, orderBy, query, where } from "firebase/firestore";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -55,10 +55,20 @@ import { toast } from 'react-toastify';
               return TaskList.push({
                 id: doc.id,
                 data: doc.data(),
-              });
+              }
+              );
             });
             setTaskList(TaskList);
             setLoading(false);
+            const allTasksDone = TaskList.every((task) => task.data.status === "Done");
+            console.log(allTasksDone)
+
+            if (allTasksDone) {
+              const projectDocRef = doc(db, "ProjectList", params.projectID);
+              await updateDoc(projectDocRef, {
+                status: "Completed"
+              });
+            }
           }
           fetchProjectTasks();
     },[])
