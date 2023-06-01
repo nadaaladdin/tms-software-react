@@ -3,13 +3,49 @@ import { useParams } from "react-router-dom";
 import { doc, getDoc, collection, query, where, orderBy, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import Spinner from "../components/Spinner";
+import ChartComponent from "../components/ChartComponent";
 
 export default function ProjectProgressReport() {
   const params = useParams();
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [chartData, setChartData] = useState(null);
+
+  const calculateChartData = (tasks) => {
+    const taskCounts = {
+      ToDo: 0,
+      InProgress: 0,
+      Done: 0
+    };
+
+    tasks.forEach(task => {
+      if(task.status === "ToDo")
+          taskCounts["ToDo"] += 1;
+      else if (task.status === "In-Progress")
+          taskCounts["InProgress"] += 1;
+      else 
+          taskCounts["Done"] += 1;
+    });
+
+    const chartData = {
+      labels: Object.keys(taskCounts),
+      datasetLabel: 'Tasks Status',
+      datasetData: Object.values(taskCounts),
+      datasetBackgroundColor: [
+        'rgba( 156, 163, 175, 1)',
+        'rgba( 59, 130, 246, 1)',
+        'rgba( 66, 245, 209, 1)'
+      ],
+      datasetBorderColor: [
+        'rgba( 156, 163, 175, 1)',
+        'rgba( 59, 130, 246, 1)',
+        'rgba( 66, 245, 209, 1)'
+      ]
+    };
+
+    return chartData;
+  };
 
   useEffect(() => {
     async function fetchProject() {
@@ -54,6 +90,9 @@ export default function ProjectProgressReport() {
         
         setTasks(tasks);
         setLoading(false);
+
+        const chartData = calculateChartData(tasks);
+        setChartData(chartData);
       } catch (error) {
         console.error('Error fetching tasks:', error);
       }
@@ -62,11 +101,9 @@ export default function ProjectProgressReport() {
     fetchTasks();
   }, [params.id]);
 
-
   if (loading) {
     return <Spinner />;
   }
-   
   return (
     <div className="container mx-auto mt-6 mb-4">
       <div>
@@ -74,19 +111,19 @@ export default function ProjectProgressReport() {
           <thead>
             <tr>
               <th className="border-b-2 border-gray-300 p-2">Name</th>
-              <th className="border-b-2 border-gray-300 p-2">Due Date</th>
               <th className="border-b-2 border-gray-300 p-2">Status</th>
+              <th className="border-b-2 border-gray-300 p-2">Due Date</th>
               <th className="border-b-2 border-gray-300 p-2">Project Manager</th>
               <th className="border-b-2 border-gray-300 p-2">Description</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td className="border-b border-gray-300 p-2">{projects.name}</td>
-              <td className="border-b border-gray-300 p-2">{projects.status}</td>
-              <td className="border-b border-gray-300 p-2">{projects.dueDate}</td>
-              <td className="border-b border-gray-300 p-2">{projects.projectManager}</td>
-              <td className="border-b border-gray-300 p-2">{projects.description}</td>
+              <td className="border-b border-gray-300 p-2 text-center border-l">{projects.name}</td>
+              <td className="border-b border-gray-300 p-2 text-center border-l">{projects.status}</td>
+              <td className="border-b border-gray-300 p-2 text-center w-32 border-l">{projects.dueDate}</td>
+              <td className="border-b border-gray-300 p-2 text-center border-l">{projects.projectManager}</td>
+              <td className="border-b border-gray-300 p-2 w-80 border-r border-l">{projects.description}</td>
             </tr>
           </tbody>
         </table>
@@ -108,18 +145,45 @@ export default function ProjectProgressReport() {
           <tbody>
             {tasks.map((task, index) => (
               <tr key={index}>
-                <td className="border-b border-gray-300 p-2">{task.name}</td>
-                <td className="border-b border-gray-300 p-2">{task.dueDate}</td>
-                <td className="border-b border-gray-300 p-2">{task.status}</td>
-                <td className="border-b border-gray-300 p-2">{task.priority}</td>
-                <td className="border-b border-gray-300 p-2">{task.userName}</td>
-                <td className="border-b border-gray-300 p-2">{task.projectManager}</td>
-                <td className="border-b border-gray-300 p-2">{task.description}</td>
+                <td className="border-b border-gray-300 p-2 text-center border-l">{task.name}</td>
+                <td className="border-b border-gray-300 p-2 text-center border-l">{task.dueDate}</td>
+                <td
+                  className={`border-b border-gray-300 p-2 text-center border-l ${
+                    task.status === "Done"
+                      ? "bg-teal-400"
+                      : task.status === "ToDo"
+                      ? "bg-gray-400"
+                      : task.status === "In-Progress"
+                      ? "bg-blue-500"
+                      : ""
+                  }`}
+                >
+                  {task.status}
+                </td>
+                <td
+                  className={`border-b border-gray-300 p-2 text-center border-l ${
+                    task.priority === "Low"
+                      ? "bg-green-500"
+                      : task.priority === "High"
+                      ? "bg-red-400"
+                      : "bg-yellow-300"
+                  }`}
+                >
+                  {task.priority}
+                </td>
+                <td className="border-b border-gray-300 p-2 text-center border-l">{task.userName}</td>
+                <td className="border-b border-gray-300 p-2 text-center border-l">{task.projectManager}</td>
+                <td className="border-b border-gray-300 p-2 border-r border-l">{task.description}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      <div className="mt-10">
+        {chartData && <ChartComponent data={chartData} />}
+      </div>
+
     </div>
   );
 }
