@@ -112,32 +112,32 @@ export default function Task() {
 
       <div className="bg-white mx-auto flex justify-center items-center flex-col max-w-6xl p-4 rounded-lg shadow-lg mt-2">
         <div className="mx-auto flex-1 bg-blue-300 w-full h-[400px] lg-[400px] rounded-lg">
-          <p className="ml-5 text-4xl font-bold mt-4 mb-6 text-green-700">
+          <p className="ml-5 text-4xl font-bold mt-4 mb-6 text-black">
             {task.name}
           </p>
 
           <p className="flex ml-5 text-2xl font-bold mb-3 text-blue-800">
             <FcBusinessman className="mr-2 text-3xl" />
             Project Manager:
-            <span className="text-green-700 ml-2">{task.projectManager}</span>
+            <span className="text-black ml-2">{task.projectManager}</span>
           </p>
 
           <p className="flex ml-5 text-2xl font-bold mb-3 text-blue-800">
             <FcManager className="mr-2 text-3xl" />
             Assigned Member:
-            <span className="text-green-700 ml-2">{memberName}</span>
+            <span className="text-black ml-2">{memberName}</span>
           </p>
 
           <p className="flex ml-5 text-2xl font-bold mb-3 text-blue-800">
             <MdWorkHistory className="mr-2 text-3xl text-black" />
             Project Name:
-            <span className="text-green-700 ml-2">{projectName}</span>
+            <span className="text-black ml-2">{projectName}</span>
           </p>
 
           <p className="flex ml-5 text-2xl font-bold text-blue-800">
             <MdDescription className="text-yellow-600 mr-2 sm:text-4xl" />
             Description:
-            <span className="text-green-700 ml-2">{task.description}</span>
+            <span className="text-black ml-2">{task.description}</span>
           </p>
 
           <p className="flex ml-6 text-2xl font-bold mb-3 text-blue-800">
@@ -167,13 +167,13 @@ export default function Task() {
           <p className="flex ml-5 text-2xl font-bold mb-3 text-blue-800">
             <GrStatusGood className="text-yellow-600 mr-2 text-3xl" />
             Task Status:
-            <span className="text-green-700 ml-2">{task.status}</span>
+            <span className="text-black ml-2">{task.status}</span>
           </p>
 
           <p className="flex ml-5 text-2xl font-bold mb-3 text-blue-800">
             <FcCalendar className="mr-2 text-3xl" />
             Due Date:
-            <span className="text-green-700 ml-2">{task.dueDate}</span>
+            <span className="text-black ml-2">{task.dueDate}</span>
           </p>
         </div>
       </div>
