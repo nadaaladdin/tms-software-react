@@ -5,30 +5,20 @@ import { addDoc, onSnapshot, collection, deleteDoc, doc, getDoc, getDocs, orderB
 import { getAuth } from 'firebase/auth';
 import { FcManager, FcBusinessman } from "react-icons/fc";
 import { toast } from "react-toastify";
-import {AiOutlineWechat} from "react-icons/ai";
-import {FaTrashAlt} from "react-icons/fa";
+import { AiOutlineWechat } from "react-icons/ai";
+import { FaTrashAlt } from "react-icons/fa";
 
 const Chat = () => {
   const [managerMessage, setManagerMessage] = useState('');
   const [memberMessage, setMemberMessage] = useState('');
   const [messages, setMessages] = useState([]);
+  const [memberId, setMemberId] = useState('');
+  const [managerId, setManagerId] = useState('');
+  const [taskId, setTaskId] = useState('');
   const auth = getAuth();
   const params = useParams();
   const [AssignedMember, setAssignedMember] = useState('');
   const [projectManager, setProjectManager] = useState('');
-
-  useEffect(() => {
-    const messagesCollectionRef = collection(db, 'messages');
-    const unsubscribe = onSnapshot(messagesCollectionRef, (snapshot) => {
-      const fetchedMessages = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setMessages(fetchedMessages);
-    });
-
-    return () => unsubscribe();
-  }, []);
 
   useEffect(() => {
     async function fetchTask() {
@@ -38,12 +28,33 @@ const Chat = () => {
         const taskData = docSnap.data();
         setAssignedMember(taskData.member);
         setProjectManager(taskData.userRef);
+        setMemberId(taskData.member);
+        setManagerId(taskData.userRef);
+        setTaskId(params.id);
       } else {
         console.log('Task not found');
       }
     }
     fetchTask();
   }, [params.id]);
+
+  useEffect(() => {
+    const messagesCollectionRef = collection(db, 'messages');
+    const queryRef = query(
+      messagesCollectionRef,
+      where('taskId', '==', taskId)
+    );
+
+    const unsubscribe = onSnapshot(queryRef, (snapshot) => {
+      const fetchedMessages = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setMessages(fetchedMessages);
+    });
+
+    return () => unsubscribe();
+  }, [taskId]);
 
   const handleManagerInputChange = (e) => {
     setManagerMessage(e.target.value);
@@ -58,6 +69,9 @@ const Chat = () => {
       const message = {
         sender: 'manager',
         content: managerMessage,
+        memberId: memberId,
+        managerId: managerId,
+        taskId: taskId,
       };
       try {
         await addDoc(collection(db, 'messages'), message);
@@ -73,6 +87,9 @@ const Chat = () => {
       const message = {
         sender: 'member',
         content: memberMessage,
+        memberId: memberId,
+        managerId: managerId,
+        taskId: taskId,
       };
       try {
         await addDoc(collection(db, 'messages'), message);
