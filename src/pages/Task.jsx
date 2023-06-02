@@ -86,6 +86,7 @@ export default function Task() {
 
   return (
     <main>
+      
       <Swiper
         slidesPerView={1}
         navigation={false}
@@ -94,17 +95,19 @@ export default function Task() {
         modules={[EffectFade]}
         autoplay={{ delay: 3000 }}
       >
-        {task.imgUrls.map((url, index) => (
-          <SwiperSlide key={index}>
-            <div
-              className="relative  w-full overflow-hidden h-[300px]"
-              style={{
-                background: `url(${task.imgUrls[index]}) center no-repeat`,
-                backgroundSize: "cover"
-              }}
-            ></div>
-          </SwiperSlide>
-        ))}
+        {task && task.imgUrls ? (
+          task.imgUrls.map((url, index) => (
+            <SwiperSlide key={index}>
+              <div
+                className="relative w-full overflow-hidden h-[300px]"
+                style={{
+                  background: `url(${task.imgUrls[index]}) center no-repeat`,
+                  backgroundSize: "cover",
+                }}
+              ></div>
+            </SwiperSlide>
+          ))
+        ) : null}
       </Swiper>
 
 
