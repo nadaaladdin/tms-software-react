@@ -20,7 +20,7 @@ export default function Home() {
     // Clean up the event listener
     return () => unsubscribe();
   }, []);
-
+  //console.log(process.env.NODE_ENV);
   return (
     <div className="min-h-screen py-10 bg-gradient-to-r from-yellow-200 to-green-300">
       <div className="max-w-4xl mx-auto px-4">
