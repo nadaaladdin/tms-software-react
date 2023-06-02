@@ -49,6 +49,16 @@ export default function Home() {
                 </Link>
               </button>
             )}
+            {!isSignedOut && (
+              <button
+                className="w-full bg-blue-900 font-medium text-sm uppercase rounded shadow-md hover:bg-blue-700 transition duration-150 ease-in-out hover:shadow-lg active:bg-blue-500 text-white px-7 py-3 mt-24"
+                type="submit"
+              >
+                <Link to="/projects" className="flex justify-center items-center">
+                  My Projects
+                </Link>
+              </button>
+            )}
           </div>
           <div className="flex justify-center items-center">
             <img
