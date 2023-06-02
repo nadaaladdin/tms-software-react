@@ -1,14 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ourLogo from "../assets/svg/ourLogo.png";
 import { Link } from 'react-router-dom';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 export default function Home() {
   const [isSignedOut, setIsSignedOut] = useState(true);
 
-  const handleSignOut = () => {
-    // Logic for signing out the user
-    setIsSignedOut(false);
-  };
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsSignedOut(false);
+      } else {
+        setIsSignedOut(true);
+      }
+    });
+
+    // Clean up the event listener
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="min-h-screen py-10 bg-gradient-to-r from-yellow-200 to-green-300">
@@ -33,7 +43,6 @@ export default function Home() {
               <button
                 className="w-full bg-blue-900 font-medium text-sm uppercase rounded shadow-md hover:bg-blue-700 transition duration-150 ease-in-out hover:shadow-lg active:bg-blue-500 text-white px-7 py-3 mt-24"
                 type="submit"
-                onClick={handleSignOut} // Call handleSignOut when the button is clicked
               >
                 <Link to="/sign-in" className="flex justify-center items-center">
                   Get Started
