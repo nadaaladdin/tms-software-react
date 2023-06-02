@@ -15,7 +15,6 @@ import EditProject from './pages/EditProject';
 import Project from './pages/Project';
 import CreateTask from './pages/CreateTask';
 import EditTask from './pages/EditTask';
-import SecondPrivateRoute from './components/SecondPrivateRoute';
 import Task from './pages/Task';
 import ProjectProgress from './pages/ProjectProgress';
 
