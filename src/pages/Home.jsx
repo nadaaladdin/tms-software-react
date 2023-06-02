@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ourLogo from "../assets/svg/ourLogo.png";
 import { Link } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import Contact from '../components/Contact';
 
 export default function Home() {
   const [isSignedOut, setIsSignedOut] = useState(true);
@@ -32,6 +33,9 @@ export default function Home() {
               className="w-full max-w-lg mb-10"
             />
           </div>
+          {!isSignedOut && (
+          <Contact className="flex  justify-center items-center "></Contact>
+          )}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>

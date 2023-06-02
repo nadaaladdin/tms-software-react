@@ -22,7 +22,6 @@ import {RiArrowGoBackFill} from "react-icons/ri"
 import { getAuth } from 'firebase/auth';
 import Chat from "../components/Chat";
 
-
 export default function Task() {
   const params = useParams();
   const [loading, setLoading] = useState(true);
@@ -203,6 +202,7 @@ export default function Task() {
         </div>
       </div>
       <Chat/>
+
     </main>
   );
 }

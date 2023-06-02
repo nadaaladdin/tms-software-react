@@ -65,7 +65,7 @@ import { toast } from 'react-toastify';
             if (allTasksDone) {
               const projectDocRef = doc(db, "ProjectList", params.projectID);
               await updateDoc(projectDocRef, {
-                status: "Completed"
+                status: "Completed",
               });
             }
           }
@@ -92,20 +92,32 @@ import { toast } from 'react-toastify';
 
   return (
 <main>
-    <Swiper slidesPerView={1} navigation={false} pagination={{type: "progressbar"}}
-            effect='fade' modules={[EffectFade]} autoplay={{delay: 3000}}>
-        {project.imgUrls.map((url, index)=>(
+
+
+<Swiper
+        slidesPerView={1}
+        navigation={false}
+        pagination={{ type: "progressbar" }}
+        effect="fade"
+        modules={[EffectFade]}
+        autoplay={{ delay: 3000 }}
+      >
+        {project && project.imgUrls ? (
+          project.imgUrls.map((url, index) => (
             <SwiperSlide key={index}>
-                <div 
-                    className='relative  w-full overflow-hidden h-[300px]'
-                    style={{
-                        background: `url(${project.imgUrls [index]}) center no-repeat`,
-                        backgroundSize: "cover"
-                        }}>
-                </div>
+              <div
+                className="relative w-full overflow-hidden h-[300px]"
+                style={{
+                  background: `url(${project.imgUrls[index]}) center no-repeat`,
+                  backgroundSize: "cover",
+                }}
+              ></div>
             </SwiperSlide>
-        ))}
-    </Swiper>
+          ))
+        ) : null}
+      </Swiper>
+
+
 
     <div className='flex justify-between  w-full md:w-[67%] lg:w-[40%] lg:ml-20 mt-6'>
     <div className=' mb-5'>
@@ -128,14 +140,14 @@ import { toast } from 'react-toastify';
     <div className="bg-white mx-auto flex justify-center items-center flex-col max-w-6xl p-4 rounded-lg shadow-lg mt-2">
       <div className="mx-auto flex-1 bg-blue-300 w-full h-[400px] lg-[400px] rounded-lg">
          <p className=" ml-5 text-4xl font-bold mt-4 mb-6 text-black">
-            {project.name} 
-         </p>
+         {project && project.name ? project.name : ""}
+          </p>
 
          <p className=" flex ml-5 text-2xl font-bold mb-3 text-blue-800" >         
          <FcManager className='mr-2 text-3xl'/>
           Project Manager: 
           <span className="text-black ml-2">
-               {project.projectManager}
+          {project && project.projectManager ? project.projectManager : ""}
           </span>
          </p>
 
@@ -143,7 +155,8 @@ import { toast } from 'react-toastify';
          <MdDescription className='text-yellow-600 mr-2 sm:text-4xl'/>
           Description: 
           <span className="text-black ml-2">
-              {project.description}
+              {project && project.description ? project.description : ""}
+
           </span>
          </p>
 
@@ -151,7 +164,7 @@ import { toast } from 'react-toastify';
          <GrStatusGood className='text-yellow-600 mr-2 text-3xl'/>
           Project Status: 
           <span className="text-black ml-2">
-             {project.status}
+          {project && project.status ? project.status : ""}
           </span>
          </p>
 
@@ -159,7 +172,7 @@ import { toast } from 'react-toastify';
           <FcCalendar className='mr-2 text-3xl'/>
           Due Date: 
           <span className="text-black ml-2">
-              {project.dueDate}
+          {project && project.dueDate ? project.dueDate : ""}
           </span>
          </p>
 
@@ -167,7 +180,8 @@ import { toast } from 'react-toastify';
          <FaTasks className='text-black mr-2 text-3xl'/>
           Number of tasks:  
          <span className="text-black ml-2">
-                {project.numOfTasks}
+                {project && project.numOfTasks ? project.numOfTasks : ""}
+
           </span>
          </p>
 
@@ -175,7 +189,8 @@ import { toast } from 'react-toastify';
          <RiTeamFill className='text-black mr-2 text-3xl'/>
           Number of members: 
           <span className="text-black ml-2">
-              {project.numOfTasks}
+              {project && project.numOfMembers ? project.numOfMembers : ""}
+
           </span>
         
          </p>
