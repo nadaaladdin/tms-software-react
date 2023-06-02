@@ -15,16 +15,6 @@ export default function ProjectProgressReport() {
   const auth = getAuth();
 
 
-    tasks.forEach(task => {
-      if(task.status === "ToDo")
-          taskCounts["ToDo"] += 1;
-      else if (task.status === "In-Progress")
-          taskCounts["InProgress"] += 1;
-      else 
-          taskCounts["Done"] += 1;
-    });
-
-
   useEffect(() => {
     async function fetchProject() {
       const docRef = doc(db, "ProjectList", params.id);
