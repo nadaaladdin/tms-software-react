@@ -8,7 +8,7 @@ export default function ListingTask({ taskList, id , onDelete1, onEdit1 }) {
  
     return <li className='text-black relative bg-yellow-200 flex flex-col justify-between  shadow-md hover:shadow-xl rounded-md overflow-hidden transition-shadow duration-150 m-[10px]'>
         <Link className='contents' to={`/category/${id}`}>
-            <img className=' mt-2 h-[170px] w-full object-cover hover:scale-105 transition-scale duration-200 ease-in-out' loading='lazy' src={taskList.imgUrls[0]} />
+            <img className=' mt-2 h-[170px] w-full object-cover hover:scale-105 transition-scale duration-200 ease-in-out' loading='lazy' src={taskList.imgUrls} />
             <Moment className='absolute top-2 left-2 bg-[#10cc74] text-white uppercase text-xs font-semibold rounded-md px-2 py-1 shadow-lg' fromNow>
                 {taskList.timestamp?.toDate()}
             </Moment>
