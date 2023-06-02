@@ -12,15 +12,8 @@ export default function ProjectProgressReport() {
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
-  const [chartData, setChartData] = useState(null);
   const auth = getAuth();
 
-  const calculateChartData = (tasks) => {
-    const taskCounts = {
-      ToDo: 0,
-      InProgress: 0,
-      Done: 0
-    };
 
     tasks.forEach(task => {
       if(task.status === "ToDo")
@@ -31,24 +24,6 @@ export default function ProjectProgressReport() {
           taskCounts["Done"] += 1;
     });
 
-    const chartData = {
-      labels: Object.keys(taskCounts),
-      datasetLabel: 'Tasks Status',
-      datasetData: Object.values(taskCounts),
-      datasetBackgroundColor: [
-        'rgba( 156, 163, 175, 1)',
-        'rgba( 59, 130, 246, 1)',
-        'rgba( 66, 245, 209, 1)'
-      ],
-      datasetBorderColor: [
-        'rgba( 156, 163, 175, 1)',
-        'rgba( 59, 130, 246, 1)',
-        'rgba( 66, 245, 209, 1)'
-      ]
-    };
-
-    return chartData;
-  };
 
   useEffect(() => {
     async function fetchProject() {
@@ -93,9 +68,6 @@ export default function ProjectProgressReport() {
         
         setTasks(tasks);
         setLoading(false);
-
-        const chartData = calculateChartData(tasks);
-        setChartData(chartData);
       } catch (error) {
         console.error('Error fetching tasks:', error);
       }
