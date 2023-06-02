@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { doc, getDoc, collection, query, where, orderBy, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import Spinner from "../components/Spinner";
-import ChartComponent from "../components/ChartComponent";
 import {RiArrowGoBackFill} from "react-icons/ri";
 import { getAuth } from 'firebase/auth';
 import { Link } from 'react-router-dom';
@@ -195,11 +194,6 @@ export default function ProjectProgressReport() {
           </tbody>
         </table>
       </div>
-
-      <div className="mt-10">
-        {chartData && <ChartComponent data={chartData} />}
-      </div>
-
     </div>
   );
 }
